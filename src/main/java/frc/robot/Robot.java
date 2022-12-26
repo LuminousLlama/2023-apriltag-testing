@@ -4,9 +4,24 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.net.http.HttpResponse.ResponseInfo;
+
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
+import edu.wpi.first.apriltag.AprilTag;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,15 +34,45 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  public PhotonCamera camera; 
+  public PhotonPipelineResult latestResult;
+
+  NetworkTableInstance instance;
+  
+
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
-  public void robotInit() {
+  public void robotInit(){
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    m_robotContainer = new RobotContainer(this);
+
+    instance = NetworkTableInstance.create();
+
+    instance.setServer("photonvision.local");
+    instance.startClient3("camera");
+    
+    camera = new PhotonCamera(instance, "cam");
+
+
+    // AprilTagFieldLayout layout = null;
+    // try {
+    //   layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kBaseResourceDir + AprilTagFields.k2022RapidReact);
+    // } catch (Exception e) {
+    //   e.printStackTrace();
+    // }
+    
+
+    // var tag = layout.getTagPose(5);
+    
+    // SmartDashboard.putNumber("test", tag.get().getX());
+
+    // camera = new PhotonCamera("cam");
+
   }
 
   /**
@@ -44,6 +89,16 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    var result = camera.getLatestResult();
+
+    if(result.hasTargets()){
+      SmartDashboard.putBoolean("has targets", true);
+      SmartDashboard.putNumber("id", result.getBestTarget().getFiducialId());
+    } else {
+      SmartDashboard.putBoolean("has targets", false);
+    }
+    
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
