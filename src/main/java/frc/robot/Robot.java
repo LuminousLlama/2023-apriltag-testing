@@ -51,11 +51,24 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer(this);
 
-    instance = NetworkTableInstance.create();
+    //NetworkTableInstance.getDefault().startClient3("photonvision.local");
+    // instance = NetworkTableInstance.create();
 
-    instance.setServer("photonvision.local");
-    instance.startClient3("camera");
+    // instance.setServer("photonvision.local");
+    // instance.startClient3("camera");
     
+    // camera = new PhotonCamera(instance, "cam");
+
+    instance = NetworkTableInstance.getDefault();
+
+    if(isSimulation()) {
+    instance.stopServer();
+    // set the NT server if simulating this code.
+    // "localhost" for photon on desktop, or "photonvision.local" / "[ip-address]" for coprocessor
+    instance.setServer("photonvision.local");
+    instance.startClient3("myRobot");
+    }
+
     camera = new PhotonCamera(instance, "cam");
 
 
@@ -90,14 +103,15 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    var result = camera.getLatestResult();
+    // var result = camera.getLatestResult();
 
-    if(result.hasTargets()){
-      SmartDashboard.putBoolean("has targets", true);
-      SmartDashboard.putNumber("id", result.getBestTarget().getFiducialId());
-    } else {
-      SmartDashboard.putBoolean("has targets", false);
-    }
+    // if(result.hasTargets()){
+    //   SmartDashboard.putBoolean("has targets", true);
+    //   SmartDashboard.putNumber("id", result.getBestTarget().getFiducialId());
+    // } else {
+    //   SmartDashboard.putBoolean("has targets", false);
+    // }
+
     
   }
 
