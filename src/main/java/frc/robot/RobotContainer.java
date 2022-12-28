@@ -6,9 +6,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.event.EventLoop;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,8 +24,19 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
+  public XboxController controller = new XboxController(0);
+
+  public Robot robot;
+
+  EventLoop eventLoop = new EventLoop();
+
+  int out_x = 0;
+  int in_x = 0;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+  public RobotContainer(Robot robot) {
+    this.robot = robot;
+
     // Configure the button bindings
     configureBindings();
   }
@@ -32,7 +47,19 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureBindings() {}
+  private void configureBindings() {
+    new Trigger(controller::getAButton)
+      .onTrue(
+        new InstantCommand(() -> robot.camera.takeOutputSnapshot())
+        .andThen(new InstantCommand(() -> SmartDashboard.putNumber("out count", out_x++)))
+      );
+
+    new Trigger(controller::getBButton)
+      .onTrue(
+        new InstantCommand(() -> robot.camera.takeInputSnapshot())
+        .andThen(new InstantCommand(() -> SmartDashboard.putNumber("in count", in_x++)))
+      );
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
