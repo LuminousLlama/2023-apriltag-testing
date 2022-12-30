@@ -51,41 +51,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer(this);
 
-    //NetworkTableInstance.getDefault().startClient3("photonvision.local");
-    // instance = NetworkTableInstance.create();
-
-    // instance.setServer("photonvision.local");
-    // instance.startClient3("camera");
-    
-    // camera = new PhotonCamera(instance, "cam");
-
-    instance = NetworkTableInstance.getDefault();
-
-    if(isSimulation()) {
-    instance.stopServer();
-    // set the NT server if simulating this code.
-    // "localhost" for photon on desktop, or "photonvision.local" / "[ip-address]" for coprocessor
-    instance.setServer("photonvision.local");
-    instance.startClient3("myRobot");
-    }
-
-    camera = new PhotonCamera(instance, "cam");
-
-
-    // AprilTagFieldLayout layout = null;
-    // try {
-    //   layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kBaseResourceDir + AprilTagFields.k2022RapidReact);
-    // } catch (Exception e) {
-    //   e.printStackTrace();
-    // }
-    
-
-    // var tag = layout.getTagPose(5);
-    
-    // SmartDashboard.putNumber("test", tag.get().getX());
-
-    // camera = new PhotonCamera("cam");
-
+    //a
+    //b
   }
 
   /**
@@ -102,17 +69,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
-    // var result = camera.getLatestResult();
-
-    // if(result.hasTargets()){
-    //   SmartDashboard.putBoolean("has targets", true);
-    //   SmartDashboard.putNumber("id", result.getBestTarget().getFiducialId());
-    // } else {
-    //   SmartDashboard.putBoolean("has targets", false);
-    // }
-
-    
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
