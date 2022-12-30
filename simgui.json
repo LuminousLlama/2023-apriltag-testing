@@ -10,6 +10,9 @@
         "open": true
       },
       "photonvision": {
+        "cam": {
+          "open": true
+        },
         "glowworm": {
           "open": true
         },
