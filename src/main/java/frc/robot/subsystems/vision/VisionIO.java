@@ -19,7 +19,7 @@ public interface VisionIO {
         public boolean hasTargets = false;
 
         //not supported
-        public Transform3d bestCameraToTarget = new Transform3d();
+        //public Transform3d bestCameraToTarget = new Transform3d();
     }
 
     public default void updateInputs(VisionIOInputs inputs) {}

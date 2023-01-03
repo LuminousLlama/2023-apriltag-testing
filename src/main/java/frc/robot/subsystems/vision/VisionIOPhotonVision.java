@@ -38,7 +38,7 @@ public class VisionIOPhotonVision implements VisionIO {
             inputs.tagYaw = Double.NaN;
             inputs.tagAmbiguity = Double.NaN;
 
-            inputs.bestCameraToTarget = null;
+            //inputs.bestCameraToTarget = null;
         } else { //has targets true
             inputs.hasTargets = true;
 
@@ -50,7 +50,7 @@ public class VisionIOPhotonVision implements VisionIO {
             inputs.tagYaw = target.getYaw();
             inputs.tagAmbiguity = target.getPoseAmbiguity();
 
-            inputs.bestCameraToTarget = target.getBestCameraToTarget();
+            //inputs.bestCameraToTarget = target.getBestCameraToTarget();
         }
     }
 
