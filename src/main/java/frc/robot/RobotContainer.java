@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
 /**
@@ -21,7 +22,7 @@ import frc.robot.subsystems.vision.VisionSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  private final VisionSubsystem m_visionSubsystem = new VisionSubsystem(new VisionIOPhotonVision());
 
   public XboxController controller = new XboxController(0);
 
@@ -47,18 +48,18 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureBindings() {
-    new Trigger(controller::getAButton)
-      .onTrue(
-        new InstantCommand(() -> robot.camera.takeOutputSnapshot())
-        .andThen(new InstantCommand(() -> SmartDashboard.putNumber("out count", out_x++)))
-      );
+  //   new Trigger(controller::getAButton)
+  //     .onTrue(
+  //       new InstantCommand(() -> m_visionSubsystem.takeInputSnapshot())
+  //       .andThen(new InstantCommand(() -> SmartDashboard.putNumber("out count", out_x++)))
+  //     );
 
-    new Trigger(controller::getBButton)
-      .onTrue(
-        new InstantCommand(() -> robot.camera.takeInputSnapshot())
-        .andThen(new InstantCommand(() -> SmartDashboard.putNumber("in count", in_x++)))
-      );
-  }
+  //   new Trigger(controller::getBButton)
+  //     .onTrue(
+  //       new InstantCommand(() -> m_visionSubsystem.takeOutputSnapshot())
+  //       .andThen(new InstantCommand(() -> SmartDashboard.putNumber("in count", in_x++)))
+  //     );
+   }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
